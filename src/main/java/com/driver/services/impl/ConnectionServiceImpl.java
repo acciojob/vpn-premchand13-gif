@@ -27,10 +27,10 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
 
         String country_Name=countryName.toUpperCase();
-        String originalCountry=user.getOriginalIp();
-        String[] s=originalCountry.split("\\.");
+        String origCountry=user.getOriginalCountry().getCode();
+//        String[] s=origCountry.split("\\.");
 
-        if(s[0].equals(CountryName.valueOf(country_Name).toCode())){
+        if(origCountry.equals(CountryName.valueOf(country_Name).toCode())){
             return user;
         }
         List<ServiceProvider> serviceProviderList=user.getServiceProviderList();
@@ -57,10 +57,21 @@ public class ConnectionServiceImpl implements ConnectionService {
             throw new Exception("Unable to connect");
         }
         user.setConnected(true);
+
+        Connection connection=new Connection();
+        connection.setUser(user);
+        connection.setServiceProvider(serviceProviderRRR);
+        connectionRepository2.save(connection);
+
+        serviceProviderRRR.getConnectionList().add(connection);
+
+        user.getConnectionList().add(connection);
+
         user.setMaskedIp(remoteCode+"."+serviceProviderRRR.getId()+"."+user.getId());
 
 
         userRepository2.save(user);
+        serviceProviderRepository2.save(serviceProviderRRR);
         return user;
 
     }
@@ -86,8 +97,8 @@ public class ConnectionServiceImpl implements ConnectionService {
             String[] resStr=receiver.getMaskedIp().split("\\.");
             String resCode=resStr[0];
 
-            String[] senStr=sender.getOriginalIp().split("\\.");
-            String senCode=senStr[0];
+//            String[] senStr=sender.getOriginalIp().split("\\.");
+            String senCode=sender.getOriginalCountry().getCode();
             if(resCode.equals(senCode)){
                 sender.setMaskedIp(null);
                 sender.setConnected(false);
@@ -119,11 +130,11 @@ public class ConnectionServiceImpl implements ConnectionService {
             userRepository2.save(sender);
             return sender;
         }
-        String[] resStr=receiver.getOriginalIp().split("\\.");
-        String resCode=resStr[0];
+//        String[] resStr=receiver.getOriginalIp().split("\\.");
+        String resCode=receiver.getOriginalCountry().getCode();
 
-        String[] senStr=sender.getOriginalIp().split("\\.");
-        String senCode=senStr[0];
+//        String[] senStr=sender.getOriginalIp().split("\\.");
+        String senCode=sender.getOriginalCountry().getCode();
         if(resCode.equals(senCode)){
             sender.setMaskedIp(null);
             sender.setConnected(false);
