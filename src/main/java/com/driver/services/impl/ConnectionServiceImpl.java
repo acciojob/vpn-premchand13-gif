@@ -61,7 +61,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         Connection connection=new Connection();
         connection.setUser(user);
         connection.setServiceProvider(serviceProviderRRR);
-        connectionRepository2.save(connection);
+//        connectionRepository2.save(connection);
 
         serviceProviderRRR.getConnectionList().add(connection);
 
@@ -100,9 +100,9 @@ public class ConnectionServiceImpl implements ConnectionService {
 //            String[] senStr=sender.getOriginalIp().split("\\.");
             String senCode=sender.getOriginalCountry().getCode();
             if(resCode.equals(senCode)){
-                sender.setMaskedIp(null);
-                sender.setConnected(false);
-                userRepository2.save(sender);
+//                sender.setMaskedIp(null);
+//                sender.setConnected(false);
+//                userRepository2.save(sender);
                 return sender;
             }
 
@@ -136,9 +136,9 @@ public class ConnectionServiceImpl implements ConnectionService {
 //        String[] senStr=sender.getOriginalIp().split("\\.");
         String senCode=sender.getOriginalCountry().getCode();
         if(resCode.equals(senCode)){
-            sender.setMaskedIp(null);
-            sender.setConnected(false);
-            userRepository2.save(sender);
+//            sender.setMaskedIp(null);
+//            sender.setConnected(false);
+//            userRepository2.save(sender);
             return sender;
         }
 
