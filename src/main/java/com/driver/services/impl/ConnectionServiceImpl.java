@@ -28,7 +28,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         String country_Name=countryName.toUpperCase();
         String originalCountry=user.getOriginalIp();
-        String[] s=originalCountry.split(".");
+        String[] s=originalCountry.split("\\.");
 
         if(s[0].equals(CountryName.valueOf(country_Name).toCode())){
             return user;
@@ -83,10 +83,10 @@ public class ConnectionServiceImpl implements ConnectionService {
         User sender=userRepository2.findById(senderId).get();
         User receiver=userRepository2.findById(receiverId).get();
         if(receiver.getConnected()){
-            String[] resStr=receiver.getMaskedIp().split(".");
+            String[] resStr=receiver.getMaskedIp().split("\\.");
             String resCode=resStr[0];
 
-            String[] senStr=sender.getOriginalIp().split(".");
+            String[] senStr=sender.getOriginalIp().split("\\.");
             String senCode=senStr[0];
             if(resCode.equals(senCode)){
                 sender.setMaskedIp(null);
@@ -119,10 +119,10 @@ public class ConnectionServiceImpl implements ConnectionService {
             userRepository2.save(sender);
             return sender;
         }
-        String[] resStr=receiver.getOriginalIp().split(".");
+        String[] resStr=receiver.getOriginalIp().split("\\.");
         String resCode=resStr[0];
 
-        String[] senStr=sender.getOriginalIp().split(".");
+        String[] senStr=sender.getOriginalIp().split("\\.");
         String senCode=senStr[0];
         if(resCode.equals(senCode)){
             sender.setMaskedIp(null);
